@@ -1,11 +1,11 @@
 ### Date created
-Include the date you created this project and README file.
+4 January 2021 (1/4/2021)
 
 ### Project Title
-Replace the Project Title
+Udacity U.S. Bikeshare Data Project
 
 ### Description
-Describe what your project is about and what it does
+The core of the project is a Python script that allows users to interactively view statistics and data on bikeshare programs in three U.S. cities.
 
 ### Files used
 Include the files used
