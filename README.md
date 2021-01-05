@@ -5,11 +5,14 @@
 Udacity U.S. Bikeshare Data Project
 
 ### Description
-The core of the project is a Python script that allows users to interactively view statistics and data on bikeshare programs in three U.S. cities.
+The core of the project is a Python script that allows users to interactively view statistics and data on bikeshare programs in three U.S. cities: Chicago, New York City, and Washington D.C.
+
+The Python script and this GitHub repository are major parts of two projects completed for Udacity's Programming for Data Science with Python nanodegree.
 
 ### Files used
 tracked:
 bikeshare.py
+README.md
 
 not tracked:
 three (3) csv files containing data for bikeshare programs in Chicago, New York City, and Washington D.C.
