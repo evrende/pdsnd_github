@@ -1,5 +1,5 @@
 ### Date created
-4 January 2021 (1/4/2021)
+4 January 2021
 
 ### Project Title
 Udacity U.S. Bikeshare Data Project
