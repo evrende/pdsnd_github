@@ -524,7 +524,7 @@ def main():
                     all_done = input("or enter any text to exit: ")
                     if not all_done:
                         print('\n', working.head(), '\n')
-                #if counter/orig_length < 1: # if len(working) > 0 is logically equivalent
+                # tell user all raw data has been shown, offer to see again:
                 print("I've now shown you the whole set!")
                 print("I'm not sure whether to congratulate you on your perseverance or rebuke you as a")
                 print("prodigious time waster -- but either way, I'm impressed that you made it this far!")
