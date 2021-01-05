@@ -10,11 +10,11 @@ The core of the project is a Python script that allows users to interactively vi
 The Python script and this GitHub repository are major parts of two projects completed for Udacity's Programming for Data Science with Python nanodegree.
 
 ### Files used
-tracked:
-bikeshare.py
+tracked:  
+bikeshare.py  
 README.md
 
-not tracked:
+not tracked:  
 three (3) csv files containing data for bikeshare programs in Chicago, New York City, and Washington D.C.
 
 ### Credits
