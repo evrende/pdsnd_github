@@ -1,5 +1,5 @@
 """
-This is B. Todd Shirley's Python project script (on US bikeshare data)
+This is my Python project script (on US bikeshare data)
 for Udacity's Programming for Data Science with Python nanodegree.
 """
 
