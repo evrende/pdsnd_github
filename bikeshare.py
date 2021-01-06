@@ -123,7 +123,7 @@ def get_filters(table, messages):
     print("\nAll the text you enter can be either lowercase or uppercase.")
 
     filters = ('city', 'month', 'day')
-    crown_jewels = [] # perhaps not the most descriptive name; these are the city, month, and day choices to be made
+    city_month_day = [] # perhaps not the most descriptive name; these are the city, month, and day choices to be made
     # get choices:
     for i in range(3):
         print(messages[i])
@@ -155,8 +155,8 @@ def get_filters(table, messages):
         # this function is 'get_filters'; 'all' counts as a filter; the actual filtering will be done further on
         if fltr.lower() == '[no filter]':
             fltr = 'all'
-        crown_jewels.append(fltr)
-    return tuple(crown_jewels)
+        city_month_day.append(fltr)
+    return tuple(city_month_day)
 
 
 def load_data(city, month, day):
