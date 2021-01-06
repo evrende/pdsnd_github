@@ -356,9 +356,7 @@ def user_stats(df):
     start_time = time.time()
 
     # display counts of user types:
-    customers = 0
-    subscribers = 0
-    unknown = 0
+    customers, subscribers, unknown = 0, 0, 0
 
     for value in df['User Type']:
         if value == 'Customer':
