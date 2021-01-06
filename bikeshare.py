@@ -123,7 +123,7 @@ def get_filters(table, messages):
     print("\nAll the text you enter can be either lowercase or uppercase.")
 
     filters = ('city', 'month', 'day')
-    crown_jewels = [] # perhaps not the most descriptive name; these are the city, month, and day choices to be made
+    city_month_day = [] # perhaps not the most descriptive name; these are the city, month, and day choices to be made
     # get choices:
     for i in range(3):
         print(messages[i])
@@ -155,8 +155,8 @@ def get_filters(table, messages):
         # this function is 'get_filters'; 'all' counts as a filter; the actual filtering will be done further on
         if fltr.lower() == '[no filter]':
             fltr = 'all'
-        crown_jewels.append(fltr)
-    return tuple(crown_jewels)
+        city_month_day.append(fltr)
+    return tuple(city_month_day)
 
 
 def load_data(city, month, day):
@@ -356,9 +356,7 @@ def user_stats(df):
     start_time = time.time()
 
     # display counts of user types:
-    customers = 0
-    subscribers = 0
-    unknown = 0
+    customers, subscribers, unknown = 0, 0, 0
 
     for value in df['User Type']:
         if value == 'Customer':
@@ -374,9 +372,8 @@ def user_stats(df):
         print("However, for {} trip{}, the user type is unknown.".format(unknown, plural))
     
     # display counts of gender:
-    females = 0
-    males = 0
-    weiss_nicht = 0 # German for 'don't know'
+    females, males, weiss_nicht = 0, 0, 0
+    # German for 'don't know'
 
     if not 'Gender' in df.columns:
         print("\nSorry; no gender or birth-year data is available for Washington.")
@@ -440,6 +437,76 @@ def user_stats(df):
     print('\n' + this + '\n' + '-' * len(this))
 
 
+def show_raw_data(filtered_df):
+    # prepare to let user view raw data:
+    quit = False
+    orig_length = len(filtered_df)
+    # Since the row labels in the filtered DataFrame will be unpredictable,
+    # but knowing them will let us specify which rows to drop (a part of the 
+    # display process here), we'll use a function to find them at each viewing step:
+    def get_indices(string):
+        """From submitted string (containing the first five rows of a DataFrame),
+           extract the (integer) row labels and return them as the elements of a list.
+           input: multi-line string created from 5-line DataFrame to be dropped
+           output: a list containing the integer row labels, one for each of the five records in the string"""
+        # each index can be found immediately between an EOL character and white space:
+        left_bracket = string.find('\n') # an integer position in string
+        right_bracket = string.find(' ', left_bracket) # another
+        indices = [int(string[left_bracket + 1:right_bracket])]
+        # this list holds the first index; now get the other 4:
+        for i in range(4):
+            left_bracket = string.find('\n', right_bracket)
+            right_bracket = string.find(' ', left_bracket)
+            indices.append(int(string[left_bracket + 1:right_bracket]))
+        return indices
+
+    # and begin:
+    print("\nOK, now you can look at the raw data from this set yourself.")
+    print("Your selections returned a set containing {} records.".format(orig_length))
+    print("You can look at five records at a time for as long as you like.")
+
+    # allow user to view sets of five records until the cows come home:
+    while not quit:
+        counter = 0
+        working = filtered_df.copy()
+        first_next = 'first'
+        for five_rows in range(orig_length//5):
+            print("Just press Enter to see the {} five records,".format(first_next))
+            finished = input("or enter any text to exit: ")
+            # NOTE: While the project rubric speaks of 'yes' and 'no' responses to guide this
+            # functioning, I've opted for no input (just Enter) to advance and any input to exit
+            # the records-review. The reasons for these choices are ease and efficiency of use.
+            if not finished:
+                # display 5 records:
+                print('\n', working.head(), '\n')
+                # and discard them:
+                these_rows = get_indices(str(working.head()))
+                working.drop(these_rows, axis = 0, inplace = True)
+                first_next = 'next'
+                counter += 5
+                percentage = round(100 * counter/orig_length, 2)
+                print("You have viewed {}% of the records returned.".format(percentage))
+            else: # (finished)
+                quit = True
+                break # exit for loop
+        if not quit: # (user has viewed all or nearly all records)
+            # show any last bits from DataFrame:
+            if len(working) > 0:
+                print("Press Enter to see the very last records,")
+                all_done = input("or enter any text to exit: ")
+                if not all_done:
+                    print('\n', working.head(), '\n')
+            #if counter/orig_length < 1: # if len(working) > 0 is logically equivalent
+            print("I've now shown you the whole set!")
+            print("I'm not sure whether to congratulate you on your perseverance or rebuke you as a")
+            print("prodigious time waster -- but either way, I'm impressed that you made it this far!")
+            again = input("Enter any text to view from the top again: ")
+            if not again:
+                quit = True
+            else:
+                print()
+
+
 def main():
     """
     Gathers together and coordinates the action of all the above-defined functions and data structures.
@@ -465,74 +532,7 @@ def main():
         input(advance_message + next(group) + ': ')
         user_stats(filtered_df)
 
-        # prepare to let user view raw data:
-        quit = False
-        orig_length = len(filtered_df)
-
-        # Since the row labels in the filtered DataFrame will be unpredictable,
-        # but knowing them will let us specify which rows to drop (a part of the 
-        # display process here), we'll use a function to find them at each viewing step:
-        def get_indices(string):
-            """From submitted string (containing the first five rows of a DataFrame),
-               extract the (integer) row labels and return them as the elements of a list.
-               input: multi-line string created from 5-line DataFrame to be dropped
-               output: a list containing the integer row labels, one for each of the five records in the string"""
-            # each index can be found immediately between an EOL character and white space:
-            left_bracket = string.find('\n') # an integer position in string
-            right_bracket = string.find(' ', left_bracket) # another
-            indices = [int(string[left_bracket + 1:right_bracket])]
-            # this list holds the first index; now get the other 4:
-            for i in range(4):
-                left_bracket = string.find('\n', right_bracket)
-                right_bracket = string.find(' ', left_bracket)
-                indices.append(int(string[left_bracket + 1:right_bracket]))
-            return indices
-
-        # and begin:
-        print("\nOK, now you can look at the raw data from this set yourself.")
-        print("Your selections returned a set containing {} records.".format(orig_length))
-        print("You can look at five records at a time for as long as you like.")
-
-        # allow user to view sets of five records until the cows come home:
-        while not quit:
-            counter = 0
-            working = filtered_df.copy()
-            first_next = 'first'
-            for five_rows in range(orig_length//5):
-                print("Just press Enter to see the {} five records,".format(first_next))
-                finished = input("or enter any text to exit: ")
-                # NOTE: While the project rubric speaks of 'yes' and 'no' responses to guide this
-                # functioning, I've opted for no input (just Enter) to advance and any input to exit
-                # the records-review. The reasons for these choices are ease and efficiency of use.
-                if not finished:
-                    # display 5 records:
-                    print('\n', working.head(), '\n')
-                    # and discard them:
-                    these_rows = get_indices(str(working.head()))
-                    working.drop(these_rows, axis = 0, inplace = True)
-                    first_next = 'next'
-                    counter += 5
-                    percentage = round(100 * counter/orig_length, 2)
-                    print("You have viewed {}% of the records returned.".format(percentage))
-                else: # (finished)
-                    quit = True
-                    break # exit for loop
-            if not quit: # (user has viewed all or nearly all records)
-                # show any last bits from DataFrame:
-                if len(working) > 0:
-                    print("Press Enter to see the very last records,")
-                    all_done = input("or enter any text to exit: ")
-                    if not all_done:
-                        print('\n', working.head(), '\n')
-                # tell user all raw data has been shown, offer to see again:
-                print("I've now shown you the whole set!")
-                print("I'm not sure whether to congratulate you on your perseverance or rebuke you as a")
-                print("prodigious time waster -- but either way, I'm impressed that you made it this far!")
-                again = input("Enter any text to view from the top again: ")
-                if not again:
-                    quit = True
-                else:
-                    print()
+        show_raw_data(filtered_df)
 
         restart = input('\nEnter Yes or Y to restart with new choices: ')
         if restart.lower() not in ('yes', 'y'):
