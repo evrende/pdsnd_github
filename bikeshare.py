@@ -372,9 +372,8 @@ def user_stats(df):
         print("However, for {} trip{}, the user type is unknown.".format(unknown, plural))
     
     # display counts of gender:
-    females = 0
-    males = 0
-    weiss_nicht = 0 # German for 'don't know'
+    females, males, weiss_nicht = 0, 0, 0
+    # German for 'don't know'
 
     if not 'Gender' in df.columns:
         print("\nSorry; no gender or birth-year data is available for Washington.")
